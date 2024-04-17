@@ -32,12 +32,13 @@ class FileStorage:
         """
         if obj is None:
             pass
-        obj_key = '{}.{}'.format(obj.__class__.__name__, obj.id)
-        obj_exists = FileStorage.__objects.get(obj_key, False)
-        if not obj_exists:
-            pass
         else:
-            del FileStorage.__objects[obj_key]
+            obj_key = '{}.{}'.format(obj.__class__.__name__, obj.id)
+            obj_exists = FileStorage.__objects.get(obj_key, False)
+            if not obj_exists:
+                pass
+            else:
+                del FileStorage.__objects[obj_key]
 
     def save(self):
         """Saves storage dictionary to file"""
