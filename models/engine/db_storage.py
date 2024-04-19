@@ -5,6 +5,7 @@
 import os
 from sqlalchemy import create_engine, MetaData
 from models.base_model import Base
+from sqlalchemy.orm import sessionmaker
 
 
 class DBStorage:
@@ -31,8 +32,18 @@ class DBStorage:
         Otherwise, objects matching `cls` are reurned.
         """
         all_objs = {}
+        session = sessionmaker(bind=self.__engine)()
+
         if cls is None:
-            pass
+            for table_name in tables:
+                table_obj = tables[table_name]
+                rows = session.query(table_obj).all()
+                for row in rows:
+                    row_pair = {
+                            '{}.{}'.format(type(row).__name__, row.id): row
+                    }
+                    all_objs.update(row_pair)
+            return all_objs
 
     def new(self, obj):
         """Adds the provided object to the database."""
@@ -46,7 +57,7 @@ class DBStorage:
 
     def save(self):
         """Commit all changes of the current database session."""
-        pass
+        self.__session.commit()
 
     def reload(self, obj=None):
         """Create all tables in the database, and creates the current database
