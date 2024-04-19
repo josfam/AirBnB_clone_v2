@@ -4,3 +4,7 @@ file.json
 # test files
 test_params_create
 main_delete.py
+
+# temp files
+*.sw*
+
