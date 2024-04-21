@@ -4,3 +4,13 @@ file.json
 # test files
 test_params_create
 main_delete.py
+
+# temp files
+*.sw*
+
+# scripts
+create_env_vars.sh
+
+# code editors
+.vscode
+
