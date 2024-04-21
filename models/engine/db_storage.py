@@ -5,7 +5,9 @@
 import os
 from sqlalchemy import create_engine, MetaData
 from models.base_model import Base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
+from models.state import State
+from models.city import City
 
 
 class DBStorage:
@@ -29,25 +31,35 @@ class DBStorage:
 
     def all(self, cls=None):
         """Returns all objects from the database if `cls` is not provided.
-        Otherwise, objects matching `cls` are reurned.
+        Otherwise, objects matching `cls` are returned.
         """
-        all_objs = {}
-        session = sessionmaker(bind=self.__engine)()
+
+        matching_objs = {}
+        session = self.__session
 
         if cls is None:
-            for table_name in tables:
-                table_obj = tables[table_name]
-                rows = session.query(table_obj).all()
-                for row in rows:
-                    row_pair = {
-                            '{}.{}'.format(type(row).__name__, row.id): row
+            table_classes = {State, City}
+            for table_class in table_classes:
+                table_rows = session.query(table_class)
+                for table_row in table_rows:
+                    plucked_info = {
+                        '{}.{}'.format(
+                            type(table_row).__name__, table_row.id): table_row
                     }
-                    all_objs.update(row_pair)
-            return all_objs
+                    matching_objs.update(plucked_info)
+        else:
+            table_rows = session.query(cls)
+            for table_row in table_rows:
+                plucked_info = {
+                    '{}.{}'.format(
+                        type(table_row).__name__, table_row.id): table_row
+                }
+                matching_objs.update(plucked_info)
+        return matching_objs
 
     def new(self, obj):
         """Adds the provided object to the database."""
-        pass
+        self.__session.add(obj)
 
     def delete(self, obj=None):
         """Delete the provided object from the database,
@@ -59,8 +71,13 @@ class DBStorage:
         """Commit all changes of the current database session."""
         self.__session.commit()
 
-    def reload(self, obj=None):
+    def reload(self):
         """Create all tables in the database, and creates the current database
         session from the engine.
         """
-        pass
+        engine = self.__engine
+        Base.metadata.create_all(engine)
+
+        session_factory = sessionmaker(bind=engine, expire_on_commit=False)
+        Session = scoped_session(session_factory)
+        self.__session = Session()

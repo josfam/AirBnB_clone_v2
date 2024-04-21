@@ -8,3 +8,9 @@ main_delete.py
 # temp files
 *.sw*
 
+# scripts
+create_env_vars.sh
+
+# code editors
+.vscode
+
