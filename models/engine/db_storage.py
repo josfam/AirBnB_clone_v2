@@ -9,6 +9,8 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from models.state import State
 from models.city import City
 from models.user import User
+from models.place import Place
+
 
 class DBStorage:
     """Manages database storage for hbnb clone."""
@@ -38,7 +40,7 @@ class DBStorage:
         session = self.__session
 
         if cls is None:
-            table_classes = {State, City}
+            table_classes = {State, City, User, Place}
             for table_class in table_classes:
                 table_rows = session.query(table_class)
                 for table_row in table_rows:
