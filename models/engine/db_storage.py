@@ -10,7 +10,7 @@ from models.state import State
 from models.city import City
 from models.user import User
 from models.place import Place
-
+from models.review import Review
 
 class DBStorage:
     """Manages database storage for hbnb clone."""
@@ -40,7 +40,7 @@ class DBStorage:
         session = self.__session
 
         if cls is None:
-            table_classes = {State, City, User, Place}
+            table_classes = {State, City, User, Place, Review}
             for table_class in table_classes:
                 table_rows = session.query(table_class)
                 for table_row in table_rows:
