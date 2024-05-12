@@ -2,7 +2,7 @@
 # configures web servers for application deployment
 
 # update and upgrade
-apt update && apt upgrade -y
+# apt update && apt upgrade -y
 
 web_static="/data/web_static"
 test_dir="$web_static/releases/test"
