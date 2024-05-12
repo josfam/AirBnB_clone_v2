@@ -44,6 +44,11 @@ else
 		/etc/nginx/sites-available/default
 fi
 
+# disable the original root path
+if ! grep "#root /var/www/html" "$nginx_config" > /dev/null; then
+	sed -i 's.root /var.#root /var.' "$nginx_config"
+fi
+
 # restart nginx
 service nginx restart
 exit 0
