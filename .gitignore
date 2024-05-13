@@ -17,3 +17,5 @@ create_env_vars.sh
 # testing folder
 testing/
 
+#Other scripts
+fabric-install.sh
