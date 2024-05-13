@@ -1,4 +1,4 @@
-#!/home/caitlyn/venvs/alxstatic/bin/python3
+#!/usr/bin/python3
 
 """Generates a .tgz archive from the contents of the web_static folder
 of the AirBnB Clone repo, using the function do_pack.
