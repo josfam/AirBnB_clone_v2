@@ -9,7 +9,8 @@ from fabric.api import *
 from datetime import datetime
 
 env.hosts = ['54.160.122.175', '54.208.168.38']
-
+env.user = 'ubuntu'
+env.key_filename = '~/.ssh/id_rsa'
 
 def do_pack():
     """Generates a .tgz archive from the contents of the web_static folder"""
