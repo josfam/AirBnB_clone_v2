@@ -37,7 +37,8 @@ def do_deploy(archive_path):
     try:
         put(archive_path, '/tmp/')
 
-        # decompress the archive to a specified location, and delete the archive
+        # decompress the archive to a specified location,
+        # and delete the archive
         archive_name = archive_path.name
         untar_dest = f'/data/web_static/releases/{archive_path.stem}'
         run(f'mkdir -p {untar_dest}')
