@@ -34,21 +34,24 @@ def do_deploy(archive_path):
     archive_path = Path(archive_path)
     if not Path.exists(Path(archive_path)):
         return False
+    try:
+        put(archive_path, '/tmp/')
 
-    put(archive_path, '/tmp/')
+        # decompress the archive to a specified location, and delete the archive
+        archive_name = archive_path.name
+        untar_dest = f'/data/web_static/releases/{archive_path.stem}'
+        run(f'mkdir -p {untar_dest}')
+        run(f'tar -xf /tmp/{archive_name} -C {untar_dest}')
+        run(f'rm /tmp/{archive_name}')
 
-    # decompress the archive to a specified location, and delete the archive
-    archive_name = archive_path.name
-    untar_dest = f'/data/web_static/releases/{archive_path.stem}'
-    run(f'mkdir -p {untar_dest}')
-    run(f'tar -xf /tmp/{archive_name} -C {untar_dest}')
-    run(f'rm /tmp/{archive_name}')
+        # move contents of web_static one level outwards
+        run(f'mv {untar_dest}/web_static/* {untar_dest}')
+        run(f'rm -rf {untar_dest}/web_static/')
 
-    # move contents of web_static one level outwards
-    run(f'mv {untar_dest}/web_static/* {untar_dest}')
-    run(f'rm -rf {untar_dest}/web_static/')
-
-    # update symbolic link to the new codebase
-    sym_link = '/data/web_static/current'
-    run(f'rm {sym_link}')
-    run(f'ln -s {untar_dest}/ {sym_link}')
+        # update symbolic link to the new codebase
+        sym_link = '/data/web_static/current'
+        run(f'rm {sym_link}')
+        run(f'ln -s {untar_dest}/ {sym_link}')
+    except Exception as e:
+        return False
+    return True
