@@ -20,5 +20,5 @@ def do_pack():
     local(f'tar -cvf {tar_path} web_static')
 
     if Path.exists(tar_path):
-        return(tar_path)
+        return tar_path
     return None
