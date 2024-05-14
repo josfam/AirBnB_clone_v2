@@ -5,6 +5,13 @@
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from models.base_model import BaseModel, Base
 
+# joint table between Amenity and Place
+place_amenity = Table(
+    'place_amenity',
+    Base.metadata,
+    Column(String(60), ForeignKey('places.id'), nullable=False),
+    Column(String(60), ForeignKey('amenities.id'), nullable=False)
+)
 
 class Place(BaseModel, Base):
     """A place to stay"""
@@ -21,3 +28,4 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+    amenities = 
