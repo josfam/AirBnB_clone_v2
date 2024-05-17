@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-"""A Flask web application"""
+"""A Flask web application for the airbnb clone application"""
 
 from flask import Flask
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/', strict_slashes=False)
 def home():
-    """The home route"""
+    """The default home route when visiting the site"""
     return 'Hello HBNB!'
 
 
