@@ -21,8 +21,8 @@ def hbnb():
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_text(text):
-    """Display C is, and whatever text was specified"""
-    return 'C is {}'.format(text.replace("_", " "))
+    """Display C, and whatever text was specified"""
+    return 'C {}'.format(text.replace("_", " "))
 
 
 if __name__ == '__main__':
